@@ -1,0 +1,1 @@
+# cornershop_searcher
