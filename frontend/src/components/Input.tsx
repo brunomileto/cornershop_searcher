@@ -16,7 +16,7 @@ export const Input = ({ handleSearchTerm }: InputProps) => {
   const onSubmit = handleSubmit((data) => handleSearchTerm(data.searchString));
 
   return (
-    <div className="flex gap-6 h-7 justify-center items-center">
+    <div className="flex lg:block gap-6 h-7 justify-center items-center">
       <div>
         <span className="text-xl">Informe um produto:</span>
       </div>

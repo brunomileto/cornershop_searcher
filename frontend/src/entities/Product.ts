@@ -1,6 +1,6 @@
 import { Store } from "./Store";
 
-export class Product {
+export interface Product {
   store: Store;
   searchTerm: string;
   name: string;

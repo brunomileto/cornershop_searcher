@@ -1,4 +1,4 @@
-export class Store {
+export interface Store {
   id: number;
   name: string;
   imgUrl: string;

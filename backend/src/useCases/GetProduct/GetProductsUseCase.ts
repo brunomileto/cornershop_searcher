@@ -15,13 +15,18 @@ export class GetProductsUseCase {
     cep: string,
     country: string
   ): Promise<Product[]> {
-    this.productsList = [
+    const allProductsList = [
       ...(await this.productsProvider.getAllProducts(searchTerm, cep, country)),
     ];
-    if (this.productsList.length === 0) {
+    if (allProductsList.length === 0) {
       const emptyProductList: Product[] = [new Product()];
       return emptyProductList;
     }
+    this.productsList = [
+      ...allProductsList.filter(
+        (product) => !product.availabilityStatus.includes("OUT")
+      ),
+    ];
     return this.productsList;
   }
 }
