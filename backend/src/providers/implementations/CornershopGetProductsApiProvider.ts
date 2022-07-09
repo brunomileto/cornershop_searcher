@@ -4,6 +4,9 @@ import axios from "axios";
 import { Store } from "../../entities/Store";
 
 export class CornershopGeProductsApiProvider implements IProductsProvider {
+  getBestProducts(products: Product[]): Promise<Product[]> {
+    throw new Error("Method not implemented.");
+  }
   products: Product[];
   private GET_PRODUCTS_BASE_URL =
     "https://cornershopapp.com/api/v2/branches/search?";
@@ -30,7 +33,8 @@ export class CornershopGeProductsApiProvider implements IProductsProvider {
     newProduct.name = productAisle.name;
     newProduct.price = productAisle.price;
     newProduct.searchTerm = searchTerm;
-    newProduct.store = newStore;
+    newProduct.storeName = newStore.name;
+    newProduct.storeLocation = newStore.address;
     newProduct.unitValue = productAisle.package;
     newProduct.unity = productAisle.buy_unit;
     return newProduct;
@@ -54,13 +58,20 @@ export class CornershopGeProductsApiProvider implements IProductsProvider {
       });
     });
 
-    productsList.sort((productA, productB) =>
-      productA.price < productB.price ? -1 : 1
-    );
-    return productsList;
-  }
+    productsList.sort((productA, productB) => {
+      if (
+        productA.storeName.toLocaleLowerCase() ==
+        productB.storeName.toLocaleLowerCase()
+      ) {
+        return productA.price < productB.price ? -1 : 1;
+      }
 
-  getBestProducts(products: Product[]): Promise<Product[]> {
-    throw new Error("Method not implemented.");
+      return productA.storeName.toLocaleUpperCase() <
+        productB.storeLocation.toLocaleUpperCase()
+        ? -1
+        : 1;
+    });
+
+    return productsList;
   }
 }
